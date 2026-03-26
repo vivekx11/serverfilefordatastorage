@@ -1,0 +1,67 @@
+CREATE DATABASE IF NOT EXISTS classroom_management;
+USE classroom_management;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'teacher', 'student') NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  token_hash TEXT NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS classes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  class_name VARCHAR(150) NOT NULL,
+  teacher_id INT NOT NULL,
+  class_code VARCHAR(20) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS class_students (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  class_id INT NOT NULL,
+  student_id INT NOT NULL,
+  enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_enrollment (class_id, student_id),
+  FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS assignments (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  class_id INT NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  deadline DATETIME NOT NULL,
+  file_path VARCHAR(255),
+  original_filename VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS submissions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  assignment_id INT NOT NULL,
+  student_id INT NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  original_filename VARCHAR(255) NOT NULL,
+  marks DECIMAL(5,2) DEFAULT NULL,
+  is_late BOOLEAN NOT NULL DEFAULT FALSE,
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_submission (assignment_id, student_id),
+  FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+);
