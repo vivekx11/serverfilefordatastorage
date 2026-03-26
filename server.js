@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
 require('dotenv').config();
-
+// BASIC ROUTES
 const authRoutes = require('./routes/auth');
 const classRoutes = require('./routes/class');
 const assignmentRoutes = require('./routes/assignment');
