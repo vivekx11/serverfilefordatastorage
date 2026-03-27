@@ -65,3 +65,6 @@ CREATE TABLE IF NOT EXISTS submissions (
   FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE,
   FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+
+
