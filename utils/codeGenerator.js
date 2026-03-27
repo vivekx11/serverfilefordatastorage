@@ -9,6 +9,7 @@ const generateClassCode = (length = 6) => {
   }
 
   return code;
+  // code generater
 };
 
 module.exports = {
