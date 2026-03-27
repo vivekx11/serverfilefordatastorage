@@ -15,6 +15,8 @@ const run = async () => {
     multipleStatements: true
   });
 
+  // databases
+
   try {
     await connection.query(schema);
     console.log('Database schema initialized successfully.');
