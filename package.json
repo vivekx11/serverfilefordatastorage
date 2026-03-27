@@ -1,7 +1,7 @@
 {
   "name": "classroom-management-system",
   "version": "1.0.0",
-  "description": "Web-based learning management platform With data storage",
+  "description": "Web-based learning management platform With data storage in details",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
