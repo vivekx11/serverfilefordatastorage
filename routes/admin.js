@@ -14,6 +14,8 @@ router.get('/users', authMiddleware, roleMiddleware('admin'), async (req, res) =
   }
 });
 
+// admin 
+
 router.put('/users/:id/deactivate', authMiddleware, roleMiddleware('admin'), async (req, res) => {
   try {
     await db.query('UPDATE users SET is_active = FALSE WHERE id = ?', [req.params.id]);
