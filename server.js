@@ -11,7 +11,7 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+// main routes.js
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
